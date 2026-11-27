@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apollo Cradle Royale | Chirag Enclave, New Delhi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        apollo: {
+                            red: '#E31E24',
+                            darkRed: '#B9151B',
+                            softRed: '#FFF1F2',
+                            blue: '#005596',
+                            teal: '#008C99',
+                            navy: '#0F2942',
+                            slate: '#475569'
+                        }
+                    },
+                    boxShadow: {
+                        'widget': '0 20px 50px -12px rgba(15, 41, 66, 0.25)',
+                        'card': '0 4px 20px -2px rgba(15, 41, 66, 0.06)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for Chat Window */
+        .chat-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+
+        /* Animations */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(14px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-msg {
+            animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.92); opacity: 0.7; }
+            70% { transform: scale(1.28); opacity: 0; }
+            100% { transform: scale(1.28); opacity: 0; }
+        }
+        .pulse-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            background: #E31E24;
+            z-index: -1;
+            animation: pulseRing 2.2s infinite;
+        }
+
+        /* Typing indicator dots */
+        .typing-dot {
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-apollo-red selection:text-white">
+
+    <!-- Top Emergency & Quick Contact Bar -->
+    <div class="bg-apollo-navy text-white text-xs py-2 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-4">
+                <span class="inline-flex items-center gap-1.5 font-medium text-rose-300">
+                    <span class="w-2 h-2 rounded-full bg-apollo-red animate-pulse"></span>
+                    24/7 Maternity & Paediatric Emergency
+                </span>
+                <span class="hidden md:inline text-slate-300">|</span>
+                <span class="hidden md:inline text-slate-200">Plot No. A-2, Outer Ring Road, Greater Kailash-1, Chirag Enclave, New Delhi – 110048</span>
+            </div>
+            <div class="flex items-center gap-4 font-medium">
+                <a href="tel:18605004424" class="hover:text-rose-300 transition flex items-center gap-1">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-apollo-red"></i> 1860 500 4424
+                </a>
+                <a href="tel:01144244424" class="hidden sm:flex hover:text-rose-300 transition items-center gap-1">
+                    <span>Alt: 011-4424 4424</span>
+                </a>
+                <button onclick="toggleAdminModal(true)" class="bg-white/10 hover:bg-white/20 text-white px-2.5 py-1 rounded-md transition flex items-center gap-1.5 text-[11px] font-semibold border border-white/15">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Receptionist Desk (Admin)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hospital Website Header (Context Backdrop for the Widget) -->
+    <header class="bg-white border-b border-slate-200/80 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-apollo-red to-apollo-darkRed flex items-center justify-center text-white shadow-md">
+                    <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-extrabold text-xl tracking-tight text-apollo-navy">Apollo Cradle</span>
+                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-amber-200">Royale</span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Chirag Enclave • Greater Kailash-1, New Delhi</p>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
+                <a href="#specialties" class="hover:text-apollo-red transition">Specialties</a>
+                <a href="#doctors" class="hover:text-apollo-red transition">Our Specialists</a>
+                <a href="#location" class="hover:text-apollo-red transition">Location & Hours</a>
+                <a href="https://www.apollocradle.com/delhi-ncr/chirag-enclave/our-hospitals/maternity-hospital-in-chirag-enclave" target="_blank" rel="noopener" class="hover:text-apollo-red transition inline-flex items-center gap-1">
+                    Official Portal <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button onclick="openChatWithIntent('book')" class="bg-apollo-red hover:bg-apollo-darkRed text-white text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
+                    <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                    <span>Book Appointment</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hospital Showcase Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-16">
+        <!-- Hero Banner -->
+        <section class="bg-white rounded-3xl p-6 sm:p-12 border border-slate-200/80 shadow-card relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-rose-50 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none"></div>
+            <div class="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-apollo-softRed text-apollo-red text-xs font-semibold border border-rose-200">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        Centre of Excellence for Women & Children
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-apollo-navy leading-tight">
+                        Compassionate Maternity, Fertility & Paediatric Care in <span class="text-apollo-red">Chirag Enclave</span>
+                    </h1>
+                    <p class="text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Experience world-class clinical expertise paired with luxury birthing suites, Level III NICU, and 24/7 specialist support at Apollo Cradle Royale, Greater Kailash-1.
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="openChatWithIntent('book')" class="bg-apollo-red hover:bg-apollo-darkRed text-white font-semibold px-6 py-3.5 rounded-xl shadow-md transition flex items-center gap-2">
+                            <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+                            Chat with Virtual Receptionist
+                        </button>
+                        <button onclick="openChatWithIntent('doctors')" class="bg-slate-100 hover:bg-slate-200/80 text-apollo-navy font-semibold px-6 py-3.5 rounded-xl transition flex items-center gap-2">
+                            <i data-lucide="stethoscope" class="w-5 h-5 text-apollo-blue"></i>
+                            Find a Specialist
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live System Status & API Mode Card -->
+                <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/90 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Hospital Live Desk</span>
+                        <span id="apiStatusBadge" class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Booking API Connected
+                        </span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-slate-100">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-apollo-red shrink-0 mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-apollo-navy">Apollo Cradle Royale</p>
+                                <p class="text-slate-500 text-xs mt-0.5">Plot No. A-2, Ground Floor, Outer Ring Road, Greater Kailash-1, Chirag Enclave, New Delhi – 110048</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-100">
+                                <p class="text-xs text-slate-400 font-medium">24/7 Helpline</p>
+                                <p class="font-bold text-apollo-navy mt-0.5">1860 500 4424</p>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-100">
+                                <p class="text-xs text-slate-400 font-medium">Direct Desk</p>
+                                <p class="font-bold text-apollo-navy mt-0.5">011-4424 4424</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Developer/Demo Toggle for API Fallback Testing -->
+                    <div class="pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500">
+                        <span>Simulate Live Booking API Outage:</span>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="apiOutageToggle" class="sr-only peer" onchange="toggleApiSimulation(this.checked)">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all relative peer-checked:bg-apollo-red"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Specialties Section -->
+        <section id="specialties" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <h2 class="font-display text-2xl font-bold text-apollo-navy">Clinical Specialties</h2>
+                    <p class="text-slate-500 text-sm mt-1">Click any department to consult our AI Virtual Receptionist or view specialists.</p>
+                </div>
+            </div>
+            <div id="specialtiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- Verified Doctors Directory Preview -->
+        <section id="doctors" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <h2 class="font-display text-2xl font-bold text-apollo-navy">Chirag Enclave Medical Directory</h2>
+                    <p class="text-slate-500 text-sm mt-1">Verified specialists at Apollo Cradle Royale, Chirag Enclave.</p>
+                </div>
+                <button onclick="openChatWithIntent('doctors')" class="text-sm font-semibold text-apollo-red hover:underline inline-flex items-center gap-1">
+                    Search & Filter in Assistant <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="directoryPreviewGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- FLOATING CHATBOT WIDGET (BOTTOM-RIGHT CORNER)                         -->
+    <!-- ===================================================================== -->
+    <div id="chatbotContainer" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
+        
+        <!-- Main Chat Window -->
+        <div id="chatWindow" class="hidden w-[calc(100vw-2rem)] sm:w-[420px] md:w-[445px] h-[82vh] max-h-[680px] bg-white rounded-3xl shadow-widget border border-slate-200/90 flex flex-col overflow-hidden mb-3 transition-all duration-300">
+            
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-apollo-navy via-[#163859] to-apollo-blue text-white px-4 py-3.5 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center border border-white/20">
+                            <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-apollo-navy rounded-full"></span>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-sm leading-tight">Apollo Cradle Assistant</h3>
+                        <p class="text-[11px] text-slate-200 flex items-center gap-1">
+                            <span>Virtual Receptionist • Chirag Enclave</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button onclick="resetChat()" title="Restart Conversation" class="p-2 hover:bg-white/15 rounded-xl transition text-slate-200 hover:text-white">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="toggleChat(false)" title="Minimize Chat" class="p-2 hover:bg-white/15 rounded-xl transition text-slate-200 hover:text-white">
+                        <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subtle Safety / Emergency Banner inside Chat -->
+            <div class="bg-rose-50/90 border-b border-rose-100 px-3.5 py-1.5 flex items-center justify-between text-[11px] text-rose-800 shrink-0">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-apollo-red shrink-0"></i>
+                    Medical emergency? Call <strong>112</strong> or <strong>1860 500 4424</strong>
+                </span>
+                <button onclick="handleUserInput('Manage Existing Booking')" class="underline font-semibold text-apollo-red hover:text-apollo-darkRed">
+                    Reschedule/Cancel
+                </button>
+            </div>
+
+            <!-- Messages Scroll Container -->
+            <div id="chatMessages" class="flex-1 overflow-y-auto chat-scroll p-4 space-y-4 bg-slate-50/60">
+                <!-- Messages injected dynamically -->
+            </div>
+
+            <!-- Persistent Quick Navigation Strip -->
+            <div class="bg-white border-t border-slate-100 px-3 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+                <button onclick="handleQuickAction('Book an Appointment')" class="shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-apollo-softRed text-apollo-red hover:bg-rose-100 transition">
+                    + Book Appointment
+                </button>
+                <button onclick="handleQuickAction('Find a Doctor')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Find Doctor
+                </button>
+                <button onclick="handleQuickAction('Explore Our Services')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Services
+                </button>
+                <button onclick="handleQuickAction('FAQs')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    FAQs
+                </button>
+                <button onclick="handleQuickAction('Contact Hospital')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Contact
+                </button>
+            </div>
+
+            <!-- Chat Input Area -->
+            <form id="chatForm" onsubmit="handleFormSubmit(event)" class="bg-white border-t border-slate-200 p-3 flex items-center gap-2 shrink-0">
+                <input 
+                    type="text" 
+                    id="chatInput" 
+                    placeholder="Ask about doctors, services, or book..." 
+                    autocomplete="off"
+                    class="flex-1 bg-slate-100 text-slate-800 placeholder-slate-400 text-sm px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-apollo-red/30 focus:bg-white border border-transparent focus:border-apollo-red/40 transition"
+                >
+                <button type="submit" aria-label="Send Message" class="bg-apollo-red hover:bg-apollo-darkRed text-white p-2.5 rounded-xl shadow-sm transition shrink-0 flex items-center justify-center">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Floating Launcher Button -->
+        <button id="chatLauncher" onclick="toggleChat()" aria-label="Open Apollo Cradle Virtual Receptionist" class="pulse-ring relative group bg-apollo-red hover:bg-apollo-darkRed text-white rounded-full p-4 shadow-xl transition-all duration-300 flex items-center gap-3">
+            <i data-lucide="message-circle-heart" class="w-7 h-7"></i>
+            <span id="launcherLabel" class="hidden sm:inline font-semibold text-sm pr-1">Book Appointment</span>
+        </button>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- HOSPITAL RECEPTIONIST ADMIN DASHBOARD MODAL                           -->
+    <!-- ===================================================================== -->
+    <div id="adminModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[88vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+            <div class="bg-apollo-navy text-white px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+                        <i data-lucide="clipboard-list" class="w-5 h-5 text-emerald-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-base">Apollo Cradle Royale – Front Desk Booking & Callback Console</h3>
+                        <p class="text-xs text-slate-300">Chirag Enclave Live Appointment Ledger & Human Escalation Queue</p>
+                    </div>
+                </div>
+                <button onclick="toggleAdminModal(false)" class="p-2 hover:bg-white/15 rounded-xl transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-slate-50">
+                <!-- Stats Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                        <p class="text-xs text-slate-500 font-medium">Confirmed Appointments</p>
+                        <p id="statConfirmed" class="font-display text-2xl font-extrabold text-apollo-navy mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                        <p class="text-xs text-slate-500 font-medium">Callback / Staff Escalations</p>
+                        <p id="statCallbacks" class="font-display text-2xl font-extrabold text-amber-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80">
+                        <p class="text-xs text-slate-500 font-medium">Cancelled Bookings</p>
+                        <p id="statCancelled" class="font-display text-2xl font-extrabold text-rose-600 mt-1">0</p>
+                    </div>
+                </div>
+
+                <!-- Appointments Table -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
+                        <h4 class="font-bold text-sm text-apollo-navy">Appointment Records</h4>
+                        <span class="text-xs text-slate-400">Stored locally in browser session</span>
+                    </div>
+                    <div id="adminBookingsList" class="divide-y divide-slate-100 text-sm">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Callback Requests -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-slate-100">
+                        <h4 class="font-bold text-sm text-apollo-navy">Callback & Human-Agent Escalation Queue</h4>
+                    </div>
+                    <div id="adminCallbacksList" class="divide-y divide-slate-100 text-sm">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- APPLICATION LOGIC & VERIFIED DIRECTORY DATA                           -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * 1. VERIFIED HOSPITAL & DOCTOR DIRECTORY DATA (SOURCE OF TRUTH)
+         * Strictly adheres to provided directory for Apollo Cradle Royale, Chirag Enclave.
+         * Unverified fields (such as specific degree strings or unverified timings) are explicitly
+         * marked so no fictional medical credentials or timings are ever fabricated.
+         */
+        const HOSPITAL_INFO = {
+            name: "Apollo Cradle Royale",
+            location: "Chirag Enclave, Greater Kailash-1, New Delhi, Delhi – 110048",
+            address: "Plot No. A-2, Ground Floor, Outer Ring Road, Greater Kailash-1, Chirag Enclave, New Delhi, Delhi – 110048",
+            contact: "1860 500 4424",
+            altContact: "011-4424 4424",
+            hours: "24/7",
+            website: "https://www.apollocradle.com/delhi-ncr/chirag-enclave/our-hospitals/maternity-hospital-in-chirag-enclave"
+        };
+
+        const SPECIALTIES = [
+            {
+                id: "maternity",
+                name: "Maternity",
+                bookingDept: "Maternity / Pregnancy Care",
+                icon: "baby",
+                desc: "Comprehensive antenatal care, luxury birthing suites, normal & high-risk delivery support, and postnatal care."
+            },
+            {
+                id: "obgyn",
+                name: "Obstetrics and Gynaecology",
+                bookingDept: "Gynaecology",
+                icon: "heart-pulse",
+                desc: "Complete women's healthcare, menstrual & hormonal care, minimally invasive gynaecological procedures, and preventive screenings."
+            },
+            {
+                id: "fertility",
+                name: "Fertility",
+                bookingDept: "Fertility",
+                icon: "sparkles",
+                desc: "Assisted reproductive consultations, fertility evaluations, and personalized preconception guidance."
+            },
+            {
+                id: "fetal",
+                name: "Fetal Medicine",
+                bookingDept: "Fetal Medicine",
+                icon: "scan-heart",
+                desc: "Specialized fetal ultrasound scans, anomaly screenings, and high-risk pregnancy fetal monitoring."
+            },
+            {
+                id: "paediatrics",
+                name: "Paediatrics",
+                bookingDept: "Paediatrics",
+                icon: "smile",
+                desc: "Newborn wellness, childhood immunizations, growth & developmental monitoring, and acute paediatric care."
+            },
+            {
+                id: "nicu",
+                name: "Neonatal Intensive Care Unit (NICU)",
+                bookingDept: "Neonatology",
+                icon: "shield-plus",
+                desc: "24/7 advanced neonatal intensive care for premature and critically ill newborns."
+            },
+            {
+                id: "paed_surgery",
+                name: "Paediatric Surgery",
+                bookingDept: "Other Services",
+                icon: "stethoscope",
+                desc: "Specialized surgical care tailored safely for infants, children, and adolescents."
+            },
+            {
+                id: "radiology",
+                name: "Radiology",
+                bookingDept: "Other Services",
+                icon: "activity",
+                desc: "Diagnostic ultrasound, maternity imaging, and women's health diagnostic scans."
+            }
+        ];
+
+        // Verified Chirag Enclave Doctor Directory
+        const DOCTORS_DIRECTORY = [
+            // OBSTETRICS & GYNAECOLOGY (Also supports Maternity / Pregnancy Care & Fertility consultations)
+            { id: "doc-1", name: "Dr. Yuvakshi Juneja", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care", "Fertility"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Senior Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-2", name: "Dr. Geeta Chadha", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Senior Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-3", name: "Dr. Ranjana Sharma", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Senior Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-4", name: "Dr. Reena Khandelwal", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-5", name: "Dr. Pooja Choudhary", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care", "Fertility"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-6", name: "Dr. Tejashri Shrotri", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-7", name: "Dr. Sanjida Yasmin", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-8", name: "Dr. Ruchi Tandon", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-9", name: "Dr. Mita Verma", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-10", name: "Dr. Jaya Agarwal", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-11", name: "Dr. Poonam Misra", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care"], specialization: "Obstetrics & Gynaecology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-12", name: "Dr. Prof. Sadhna Kala", department: "Obstetrics & Gynaecology", bookingDepts: ["Gynaecology", "Maternity / Pregnancy Care", "Fertility"], specialization: "Obstetrics & Gynaecology", qualifications: "Professor & Verified Specialist – Chirag Enclave Directory", experience: "Senior Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+
+            // PAEDIATRICS & NEONATOLOGY
+            { id: "doc-13", name: "Dr. Gaurav Jawa", department: "Paediatrics & Neonatology", bookingDepts: ["Paediatrics", "Neonatology"], specialization: "Paediatrics & Neonatology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-14", name: "Dr. Anibha Pandey", department: "Paediatrics & Neonatology", bookingDepts: ["Paediatrics", "Neonatology"], specialization: "Paediatrics & Neonatology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-15", name: "Dr. Ashish Gupta", department: "Paediatrics & Neonatology", bookingDepts: ["Paediatrics", "Neonatology"], specialization: "Paediatrics & Neonatology", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+
+            // FETAL MEDICINE
+            { id: "doc-16", name: "Dr. Priyanka Chaudhary", department: "Fetal Medicine", bookingDepts: ["Fetal Medicine"], specialization: "Fetal Medicine", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-17", name: "Dr. Akshata Sharma", department: "Fetal Medicine", bookingDepts: ["Fetal Medicine"], specialization: "Fetal Medicine", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+
+            // OTHER SPECIALISTS
+            { id: "doc-18", name: "Dr. Anand Sinha", department: "Other Specialists", bookingDepts: ["Other Services", "Paediatrics"], specialization: "Paediatric Surgeon", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-19", name: "Ms. Divya Malik", department: "Other Specialists", bookingDepts: ["Other Services", "Maternity / Pregnancy Care"], specialization: "Nutritionist", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-20", name: "Ms. Vandana Sarkar", department: "Other Specialists", bookingDepts: ["Other Services", "Maternity / Pregnancy Care"], specialization: "Lactation Consultant", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" },
+            { id: "doc-21", name: "Dr. Gurbani Kohli", department: "Other Specialists", bookingDepts: ["Other Services"], specialization: "Psychologist", qualifications: "Verified Specialist – Apollo Cradle Chirag Enclave Directory", experience: "Consultant (Verify exact years via Front Desk)", timings: "Available via Live Slot Check" }
+        ];
+
+        const FAQ_ITEMS = [
+            {
+                q: "Where is Apollo Cradle located?",
+                a: "Apollo Cradle Royale is located at Plot No. A-2, Ground Floor, Outer Ring Road, Greater Kailash-1, Chirag Enclave, New Delhi, Delhi – 110048."
+            },
+            {
+                q: "Is the hospital open 24 hours?",
+                a: "Yes, Apollo Cradle Royale, Chirag Enclave operates 24/7, including round-the-clock emergency obstetric, paediatric, and NICU services."
+            },
+            {
+                q: "How can I book an appointment?",
+                a: "You can book directly right here through our Virtual Receptionist by selecting 'Book an Appointment', or by calling our helpline at 1860 500 4424 / 011-4424 4424."
+            },
+            {
+                q: "Which maternity services are available?",
+                a: "We offer comprehensive Maternity & Pregnancy Care including antenatal checkups, high-risk pregnancy management, Fetal Medicine scans, nutrition & lactation counselling, luxury birthing suites, and postnatal recovery support."
+            },
+            {
+                q: "Does the hospital have NICU facilities?",
+                a: "Yes, we have an advanced Neonatal Intensive Care Unit (NICU) staffed 24/7 by specialized neonatologists and trained neonatal nurses."
+            },
+            {
+                q: "Does the hospital offer paediatric services?",
+                a: "Yes, our Paediatrics & Neonatology department offers newborn care, vaccinations, growth monitoring, paediatric consultations, and Paediatric Surgery."
+            }
+        ];
+
+        /**
+         * 2. APPLICATION STATE & LIVE BOOKING API SIMULATION LAYER
+         */
+        const state = {
+            isOpen: false,
+            apiConnected: true, // Can be toggled in UI to test authentic fallback callback behavior
+            step: "GREETING",
+            bookingDraft: {
+                department: "",
+                doctorId: "",
+                doctorName: "",
+                consultationType: "",
+                date: "",
+                time: "",
+                patientName: "",
+                ageOrDob: "",
+                gender: "",
+                mobile: "",
+                email: "",
+                visitType: "First Visit",
+                pregnancyWeek: "",
+                reason: "",
+                existingPatientId: "",
+                consentGiven: false
+            },
+            rescheduleTargetId: null,
+            bookings: JSON.parse(localStorage.getItem("apollo_cradle_bookings") || "[]"),
+            callbacks: JSON.parse(localStorage.getItem("apollo_cradle_callbacks") || "[]")
+        };
+
+        // Seed 1 sample booking on first load so Reschedule/Cancel & Admin Desk can be tested immediately
+        if (state.bookings.length === 0) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const isoDate = tomorrow.toISOString().split("T")[0];
+            state.bookings.push({
+                bookingId: "ACR-CE-84920",
+                patientName: "Ananya Sharma",
+                ageOrDob: "29",
+                gender: "Female",
+                mobile: "9811001122",
+                email: "ananya.demo@example.com",
+                department: "Maternity / Pregnancy Care",
+                doctorName: "Dr. Yuvakshi Juneja",
+                date: isoDate,
+                time: "11:00 AM",
+                consultationType: "Hospital Visit (In-person)",
+                visitType: "Follow-up Visit",
+                pregnancyWeek: "24 Weeks",
+                status: "Confirmed",
+                createdAt: new Date().toLocaleString()
+            });
+            saveStore();
+        }
+
+        function saveStore() {
+            localStorage.setItem("apollo_cradle_bookings", JSON.stringify(state.bookings));
+            localStorage.setItem("apollo_cradle_callbacks", JSON.stringify(state.callbacks));
+            renderAdminDashboard();
+        }
+
+        /**
+         * Simulated Live Hospital Booking System API
+         * Checks real-time slot availability against existing bookings and returns verified slots.
+         */
+        const ApolloBookingAPI = {
+            async getAvailableSlots(doctorName, dateStr) {
+                await new Promise(r => setTimeout(r, 350)); // Realistic network latency
+                if (!state.apiConnected) {
+                    throw new Error("API_UNAVAILABLE");
+                }
+                const dayOfWeek = new Date(dateStr + "T00:00:00").getDay();
+                // Sundays have limited morning OPD slots
+                const baseSlots = dayOfWeek === 0
+                    ? ["10:00 AM", "10:30 AM", "11:30 AM", "12:00 PM"]
+                    : ["10:00 AM", "10:30 AM", "11:00 AM", "12:00 PM", "02:30 PM", "03:30 PM", "05:00 PM", "06:00 PM"];
+
+                // Filter out slots already booked for the same doctor & date
+                const takenSlots = state.bookings
+                    .filter(b => b.status === "Confirmed" && b.doctorName === doctorName && b.date === dateStr)
+                    .map(b => b.time);
+
+                return baseSlots.map(time => ({
+                    time,
+                    available: !takenSlots.includes(time)
+                }));
+            },
+
+            async createBooking(payload) {
+                await new Promise(r => setTimeout(r, 450));
+                if (!state.apiConnected) {
+                    throw new Error("API_UNAVAILABLE");
+                }
+                const randomDigits = Math.floor(10000 + Math.random() * 90000);
+                const bookingId = `ACR-CE-${randomDigits}`;
+                const record = {
+                    ...payload,
+                    bookingId,
+                    status: "Confirmed",
+                    createdAt: new Date().toLocaleString()
+                };
+                state.bookings.unshift(record);
+                saveStore();
+                return record;
+            },
+
+            async rescheduleBooking(bookingId, newDate, newTime) {
+                await new Promise(r => setTimeout(r, 400));
+                if (!state.apiConnected) {
+                    throw new Error("API_UNAVAILABLE");
+                }
+                const idx = state.bookings.findIndex(b => b.bookingId === bookingId);
+                if (idx === -1) throw new Error("NOT_FOUND");
+                state.bookings[idx].date = newDate;
+                state.bookings[idx].time = newTime;
+                state.bookings[idx].status = "Confirmed";
+                saveStore();
+                return state.bookings[idx];
+            },
+
+            async cancelBooking(bookingId) {
+                await new Promise(r => setTimeout(r, 350));
+                const idx = state.bookings.findIndex(b => b.bookingId === bookingId);
+                if (idx === -1) throw new Error("NOT_FOUND");
+                state.bookings[idx].status = "Cancelled";
+                saveStore();
+                return state.bookings[idx];
+            }
+        };
+
+        /**
+         * 3. INITIALIZE PAGE & WIDGET UI
+         */
+        document.addEventListener("DOMContentLoaded", () => {
+            renderHospitalPageSections();
+            renderAdminDashboard();
+            lucide.createIcons();
+            startConversation();
+        });
+
+        function renderHospitalPageSections() {
+            const specGrid = document.getElementById("specialtiesGrid");
+            specGrid.innerHTML = SPECIALTIES.map(spec => `
+                <div onclick="openChatWithDepartment('${spec.bookingDept}')" class="group cursor-pointer bg-white hover:bg-rose-50/40 p-5 rounded-2xl border border-slate-200/80 hover:border-apollo-red/40 shadow-card transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-apollo-softRed text-apollo-red group-hover:bg-apollo-red group-hover:text-white flex items-center justify-center transition mb-3.5">
+                        <i data-lucide="${spec.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-apollo-navy text-base group-hover:text-apollo-red transition">${spec.name}</h3>
+                    <p class="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-3">${spec.desc}</p>
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-apollo-blue">
+                        <span>Consult Specialist</span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+                    </div>
+                </div>
+            `).join("");
+
+            const docGrid = document.getElementById("directoryPreviewGrid");
+            const featuredDocs = [
+                DOCTORS_DIRECTORY[0],
+                DOCTORS_DIRECTORY[1],
+                DOCTORS_DIRECTORY[12],
+                DOCTORS_DIRECTORY[15],
+                DOCTORS_DIRECTORY[17],
+                DOCTORS_DIRECTORY[18]
+            ];
+            docGrid.innerHTML = featuredDocs.map(doc => `
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-card flex flex-col justify-between gap-4">
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 text-apollo-navy font-display font-bold flex items-center justify-center shrink-0 text-sm border border-slate-200">
+                            ${getInitials(doc.name)}
+                        </div>
+                        <div>
+                            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-apollo-blue mb-1">${doc.specialization}</span>
+                            <h3 class="font-display font-bold text-apollo-navy text-base">${doc.name}</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">${doc.qualifications}</p>
+                        </div>
+                    </div>
+                    <button onclick="openChatWithDoctor('${doc.id}')" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-apollo-red text-apollo-navy hover:text-white font-semibold text-xs transition flex items-center justify-center gap-1.5">
+                        <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i> Book Consultation
+                    </button>
+                </div>
+            `).join("");
+        }
+
+        function getInitials(name) {
+            return name.replace(/^(Dr\.|Prof\.|Ms\.)\s+/gi, "").split(" ").slice(0, 2).map(n => n[0]).join("").toUpperCase();
+        }
+
+        function toggleChat(forceState) {
+            const win = document.getElementById("chatWindow");
+            const label = document.getElementById("launcherLabel");
+            state.isOpen = typeof forceState === "boolean" ? forceState : !state.isOpen;
+            if (state.isOpen) {
+                win.classList.remove("hidden");
+                win.classList.add("animate-msg");
+                label.classList.add("hidden");
+                scrollToBottom();
+            } else {
+                win.classList.add("hidden");
+                label.classList.remove("hidden");
+            }
+        }
+
+        function openChatWithIntent(intent) {
+            toggleChat(true);
+            if (intent === "book") handleQuickAction("Book an Appointment");
+            if (intent === "doctors") handleQuickAction("Find a Doctor");
+        }
+
+        function openChatWithDepartment(dept) {
+            toggleChat(true);
+            selectDepartment(dept);
+        }
+
+        function openChatWithDoctor(docId) {
+            toggleChat(true);
+            const doc = DOCTORS_DIRECTORY.find(d => d.id === docId);
+            if (doc) {
+                state.bookingDraft.department = doc.bookingDepts[0];
+                selectDoctor(doc.id);
+            }
+        }
+
+        function toggleApiSimulation(isOutage) {
+            state.apiConnected = !isOutage;
+            const badge = document.getElementById("apiStatusBadge");
+            if (state.apiConnected) {
+                badge.className = "inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Booking API Connected`;
+            } else {
+                badge.className = "inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> API Offline (Callback Mode)`;
+            }
+        }
+
+        /**
+         * 4. CHAT RENDERING HELPERS
+         */
+        function scrollToBottom() {
+            const container = document.getElementById("chatMessages");
+            setTimeout(() => {
+                container.scrollTop = container.scrollHeight;
+            }, 50);
+        }
+
+        function appendUserMessage(text) {
+            const container = document.getElementById("chatMessages");
+            const div = document.createElement("div");
+            div.className = "flex justify-end animate-msg";
+            div.innerHTML = `
+                <div class="bg-apollo-red text-white text-sm px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[82%] shadow-sm leading-relaxed">
+                    ${escapeHtml(text)}
+                </div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+        }
+
+        function appendBotMessage(htmlContent, quickReplies = []) {
+            const container = document.getElementById("chatMessages");
+            const wrapper = document.createElement("div");
+            wrapper.className = "flex items-start gap-2.5 animate-msg";
+
+            let quickReplyHtml = "";
+            if (quickReplies.length > 0) {
+                quickReplyHtml = `
+                    <div class="flex flex-wrap gap-1.5 mt-2.5">
+                        ${quickReplies.map(btn => `
+                            <button 
+                                onclick="${btn.action}" 
+                                class="text-xs font-semibold px-3 py-1.5 rounded-xl border transition shadow-2xs ${
+                                    btn.primary 
+                                        ? 'bg-apollo-red text-white border-apollo-red hover:bg-apollo-darkRed' 
+                                        : 'bg-white text-apollo-navy border-slate-200 hover:border-apollo-red hover:text-apollo-red'
+                                }">
+                                ${btn.label}
+                            </button>
+                        `).join("")}
+                    </div>
+                `;
+            }
+
+            wrapper.innerHTML = `
+                <div class="w-7 h-7 rounded-xl bg-apollo-navy text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="bg-white text-slate-700 text-sm p-3.5 rounded-2xl rounded-tl-sm border border-slate-200/80 shadow-2xs leading-relaxed">
+                        ${htmlContent}
+                    </div>
+                    ${quickReplyHtml}
+                </div>
+            `;
+            container.appendChild(wrapper);
+            lucide.createIcons();
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const container = document.getElementById("chatMessages");
+            const id = "typing-" + Date.now();
+            const div = document.createElement("div");
+            div.id = id;
+            div.className = "flex items-center gap-2.5 animate-msg";
+            div.innerHTML = `
+                <div class="w-7 h-7 rounded-xl bg-apollo-navy text-white flex items-center justify-center shrink-0">
+                    <i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i>
+                </div>
+                <div class="bg-white px-4 py-3 rounded-2xl rounded-tl-sm border border-slate-200/80 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-slate-400 typing-dot"></span>
+                    <span class="w-2 h-2 rounded-full bg-slate-400 typing-dot"></span>
+                    <span class="w-2 h-2 rounded-full bg-slate-400 typing-dot"></span>
+                </div>
+            `;
+            container.appendChild(div);
+            lucide.createIcons();
+            scrollToBottom();
+            return id;
+        }
+
+        function removeTypingIndicator(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function botReplyWithDelay(htmlContent, quickReplies = [], delay = 320) {
+            const typingId = showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator(typingId);
+                appendBotMessage(htmlContent, quickReplies);
+            }, delay);
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        /**
+         * 5. APPOINTMENT BOOKING WORKFLOW (STEPS 1 TO 8)
+         */
+        function resetChat() {
+            document.getElementById("chatMessages").innerHTML = "";
+            state.step = "GREETING";
+            state.rescheduleTargetId = null;
+            state.bookingDraft = {
+                department: "",
+                doctorId: "",
+                doctorName: "",
+                consultationType: "",
+                date: "",
+                time: "",
+                patientName: "",
+                ageOrDob: "",
+                gender: "",
+                mobile: "",
+                email: "",
+                visitType: "First Visit",
+                pregnancyWeek: "",
+                reason: "",
+                existingPatientId: "",
+                consentGiven: false
+            };
+            startConversation();
+        }
+
+        // STEP 1: GREETING
+        function startConversation() {
+            const greetingHtml = `
+                <p class="font-semibold text-apollo-navy mb-1.5">Hello! Welcome to Apollo Cradle Royale, Chirag Enclave.</p>
+                <p>I'm your virtual assistant. I'm here to help you find the right doctor, explore our services and book your appointment.</p>
+                <p class="mt-2 font-medium text-apollo-navy">How may I assist you today?</p>
+            `;
+            appendBotMessage(greetingHtml, [
+                { label: "1. Book an Appointment", action: "handleQuickAction('Book an Appointment')", primary: true },
+                { label: "2. Find a Doctor", action: "handleQuickAction('Find a Doctor')" },
+                { label: "3. Explore Our Services", action: "handleQuickAction('Explore Our Services')" },
+                { label: "4. Hospital Information", action: "handleQuickAction('Hospital Information')" },
+                { label: "5. Contact Hospital", action: "handleQuickAction('Contact Hospital')" }
+            ]);
+        }
+
+        function handleQuickAction(actionLabel) {
+            appendUserMessage(actionLabel);
+            processIntent(actionLabel);
+        }
+
+        // STEP 2: SELECT DEPARTMENT
+        function startBookingStep2() {
+            state.step = "SELECT_DEPARTMENT";
+            state.rescheduleTargetId = null;
+            const departments = [
+                "Gynaecology",
+                "Maternity / Pregnancy Care",
+                "Fertility",
+                "Fetal Medicine",
+                "Paediatrics",
+                "Neonatology",
+                "Other Services"
+            ];
+            botReplyWithDelay(
+                `<p class="font-semibold text-apollo-navy">Which medical department would you like to consult?</p>
+                 <p class="text-xs text-slate-500 mt-1">Please choose a specialty below so I can match you with our verified specialists.</p>`,
+                departments.map(dept => ({
+                    label: dept,
+                    action: `selectDepartment('${dept}')`
+                }))
+            );
+        }
+
+        function selectDepartment(dept) {
+            appendUserMessage(dept);
+            state.bookingDraft.department = dept;
+            state.step = "SELECT_DOCTOR_CHOICE";
+
+            botReplyWithDelay(
+                `<p>You selected <strong class="text-apollo-navy">${dept}</strong>.</p>
+                 <p class="mt-1.5">Would you like to consult a specific doctor, or should I help you find a suitable specialist?</p>`,
+                [
+                    { label: "Select a Doctor", action: `showDoctorsForDepartment('${dept}')`, primary: true },
+                    { label: "Help Me Choose", action: `helpMeChooseDoctor('${dept}')` }
+                ]
+            );
+        }
+
+        // STEP 3: SELECT DOCTOR
+        function showDoctorsForDepartment(dept) {
+            appendUserMessage("Select a Doctor");
+            const matchingDoctors = DOCTORS_DIRECTORY.filter(d => d.bookingDepts.includes(dept));
+
+            const cardsHtml = `
+                <p class="font-semibold text-apollo-navy mb-2">Verified Specialists for ${dept}:</p>
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-1 chat-scroll">
+                    ${matchingDoctors.map(doc => `
+                        <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-white hover:border-apollo-red/50 transition">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <p class="font-bold text-apollo-navy text-xs">${doc.name}</p>
+                                    <p class="text-[11px] text-apollo-blue font-medium">${doc.specialization}</p>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">${doc.qualifications}</p>
+                                    <p class="text-[10px] text-slate-400">Experience: ${doc.experience}</p>
+                                </div>
+                                <button onclick="selectDoctor('${doc.id}')" class="shrink-0 bg-apollo-red hover:bg-apollo-darkRed text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition">
+                                    Select
+                                </button>
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+            botReplyWithDelay(cardsHtml);
+        }
+
+        function helpMeChooseDoctor(dept) {
+            appendUserMessage("Help Me Choose");
+            const matchingDoctors = DOCTORS_DIRECTORY.filter(d => d.bookingDepts.includes(dept));
+            const guidanceHtml = `
+                <p class="font-semibold text-apollo-navy">Specialist Guidance – ${dept}</p>
+                <p class="text-xs text-slate-600 mt-1">All doctors listed below are verified specialists at Apollo Cradle Royale, Chirag Enclave. If you aren't sure who to pick, you can either select any available specialist below or request a callback from our medical coordinator for personalized guidance.</p>
+                <div class="mt-2.5 space-y-1.5">
+                    ${matchingDoctors.slice(0, 4).map(doc => `
+                        <div class="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-200/80 text-xs">
+                            <div>
+                                <span class="font-semibold text-apollo-navy">${doc.name}</span>
+                                <span class="block text-[10px] text-slate-500">${doc.specialization}</span>
+                            </div>
+                            <button onclick="selectDoctor('${doc.id}')" class="bg-apollo-navy text-white text-[11px] px-2.5 py-1 rounded-lg hover:bg-apollo-blue">Book</button>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+            botReplyWithDelay(guidanceHtml, [
+                { label: "View All in Department", action: `showDoctorsForDepartment('${dept}')` },
+                { label: "Request Staff Callback", action: "startCallbackWorkflow('Doctor Selection Assistance')" }
+            ]);
+        }
+
+        function selectDoctor(docId) {
+            const doc = DOCTORS_DIRECTORY.find(d => d.id === docId);
+            if (!doc) return;
+            appendUserMessage(doc.name);
+            state.bookingDraft.doctorId = doc.id;
+            state.bookingDraft.doctorName = doc.name;
+            if (!state.bookingDraft.department) {
+                state.bookingDraft.department = doc.bookingDepts[0];
+            }
+
+            // STEP 4: SELECT APPOINTMENT TYPE
+            state.step = "SELECT_TYPE";
+            botReplyWithDelay(
+                `<p>Great choice. You have selected <strong class="text-apollo-navy">${doc.name}</strong> (${doc.specialization}).</p>
+                 <p class="mt-1.5 font-semibold text-apollo-navy">How would you prefer your consultation?</p>`,
+                [
+                    { label: "Hospital Visit (In-person)", action: "selectConsultationType('Hospital Visit (In-person)')", primary: true },
+                    { label: "Online Consultation (Subject to Doctor Support)", action: "selectConsultationType('Online Consultation')" }
+                ]
+            );
+        }
+
+        // STEP 5: SELECT DATE AND TIME
+        function selectConsultationType(type) {
+            appendUserMessage(type);
+            state.bookingDraft.consultationType = type;
+            state.step = "SELECT_DATE_TIME";
+
+            const today = new Date();
+            const minDate = today.toISOString().split("T")[0];
+            const maxDateObj = new Date();
+            maxDateObj.setDate(today.getDate() + 30);
+            const maxDate = maxDateObj.toISOString().split("T")[0];
+
+            const calendarHtml = `
+                <p class="font-semibold text-apollo-navy">Please select your preferred appointment date.</p>
+                <p class="text-xs text-slate-500 mt-0.5 mb-2.5">Checking live slot availability for <strong>${state.bookingDraft.doctorName}</strong> at Chirag Enclave.</p>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+                    <label class="block text-xs font-semibold text-slate-600">Select Date:</label>
+                    <input 
+                        type="date" 
+                        min="${minDate}" 
+                        max="${maxDate}" 
+                        value="${minDate}"
+                        onchange="fetchAndRenderSlots(this.value)"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-sm font-medium text-apollo-navy focus:outline-none focus:border-apollo-red"
+                    >
+                    <div id="liveSlotsContainer" class="pt-1">
+                        <p class="text-xs text-slate-400 italic">Loading live slots for ${minDate}...</p>
+                    </div>
+                </div>
+            `;
+            botReplyWithDelay(calendarHtml, [], 250);
+            setTimeout(() => fetchAndRenderSlots(minDate), 320);
+        }
+
+        async function fetchAndRenderSlots(selectedDate) {
+            if (!selectedDate) return;
+            state.bookingDraft.date = selectedDate;
+            const slotContainers = document.querySelectorAll("#liveSlotsContainer");
+            const activeContainer = slotContainers[slotContainers.length - 1];
+            if (!activeContainer) return;
+
+            activeContainer.innerHTML = `<p class="text-xs text-slate-500 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-apollo-red animate-ping"></span> Fetching live hospital slots...</p>`;
+
+            try {
+                const slots = await ApolloBookingAPI.getAvailableSlots(state.bookingDraft.doctorName, selectedDate);
+                activeContainer.innerHTML = `
+                    <p class="text-xs font-semibold text-slate-600 mb-2">Available Time Slots (${formatFriendlyDate(selectedDate)}):</p>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        ${slots.map(s => s.available ? `
+                            <button onclick="selectTimeSlot('${selectedDate}', '${s.time}')" class="py-1.5 px-2.5 rounded-lg bg-white border border-slate-200 hover:border-apollo-red hover:bg-apollo-softRed hover:text-apollo-red text-xs font-semibold text-apollo-navy transition">
+                                ${s.time}
+                            </button>
+                        ` : `
+                            <span class="py-1.5 px-2.5 rounded-lg bg-slate-100 border border-slate-200 text-xs text-slate-400 line-through text-center cursor-not-allowed">
+                                ${s.time} (Booked)
+                            </span>
+                        `).join("")}
+                    </div>
+                `;
+                scrollToBottom();
+            } catch (err) {
+                // API unavailable -> Do NOT show fictional availability. Offer verified callback workflow!
+                activeContainer.innerHTML = `
+                    <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-2">
+                        <p class="font-semibold">Live appointment slots are temporarily unreachable.</p>
+                        <p>To ensure accurate scheduling without fictional availability, our Chirag Enclave reception team can confirm your slot immediately.</p>
+                        <button onclick="startCallbackWorkflow('Slot Confirmation for ${state.bookingDraft.doctorName} on ${selectedDate}')" class="w-full py-2 bg-apollo-red text-white font-semibold rounded-lg hover:bg-apollo-darkRed transition">
+                            Request Priority Callback
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function formatFriendlyDate(isoStr) {
+            if (!isoStr) return "";
+            const d = new Date(isoStr + "T00:00:00");
+            return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+        }
+
+        async function selectTimeSlot(dateStr, timeStr) {
+            appendUserMessage(`${formatFriendlyDate(dateStr)} at ${timeStr}`);
+            state.bookingDraft.date = dateStr;
+            state.bookingDraft.time = timeStr;
+
+            // Check if we are in a Reschedule flow
+            if (state.rescheduleTargetId) {
+                try {
+                    const updated = await ApolloBookingAPI.rescheduleBooking(state.rescheduleTargetId, dateStr, timeStr);
+                    state.rescheduleTargetId = null;
+                    botReplyWithDelay(`
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Appointment Rescheduled
+                            </div>
+                            <p class="text-sm font-semibold text-apollo-navy">Your appointment has been updated!</p>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+                                <p><strong>Booking ID:</strong> ${updated.bookingId}</p>
+                                <p><strong>Patient:</strong> ${updated.patientName}</p>
+                                <p><strong>Doctor:</strong> ${updated.doctorName}</p>
+                                <p><strong>New Date:</strong> ${formatFriendlyDate(updated.date)}</p>
+                                <p><strong>New Time:</strong> ${updated.time}</p>
+                                <p><strong>Location:</strong> Apollo Cradle Royale, Chirag Enclave</p>
+                            </div>
+                        </div>
+                    `);
+                } catch (e) {
+                    botReplyWithDelay(`We could not reach the live booking server to update your slot. Please call <strong>1860 500 4424</strong> or request a staff callback.`, [
+                        { label: "Request Staff Callback", action: "startCallbackWorkflow('Reschedule Assistance')", primary: true }
+                    ]);
+                }
+                return;
+            }
+
+            // STEP 6: COLLECT PATIENT DETAILS
+            renderPatientDetailsForm();
+        }
+
+        function renderPatientDetailsForm() {
+            state.step = "COLLECT_DETAILS";
+            const d = state.bookingDraft;
+            const isMaternityRelated = ["Maternity / Pregnancy Care", "Gynaecology", "Fertility", "Fetal Medicine"].includes(d.department);
+
+            const formId = "patientForm-" + Date.now();
+            const formHtml = `
+                <p class="font-semibold text-apollo-navy mb-1">Please enter the patient details to complete your booking:</p>
+                <p class="text-[11px] text-slate-500 mb-3">We only collect details required for hospital registration.</p>
+                <form id="${formId}" onsubmit="submitPatientDetailsForm(event, '${formId}')" class="space-y-2.5 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">1. Patient Full Name *</label>
+                        <input type="text" name="patientName" required value="${escapeHtml(d.patientName)}" placeholder="e.g., Priya Sharma" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">2. Age / DOB *</label>
+                            <input type="text" name="ageOrDob" required value="${escapeHtml(d.ageOrDob)}" placeholder="e.g., 28 yrs or 12/05/1996" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">3. Gender *</label>
+                            <select name="gender" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:outline-none focus:border-apollo-red">
+                                <option value="Female" ${d.gender === 'Female' ? 'selected' : ''}>Female</option>
+                                <option value="Male" ${d.gender === 'Male' ? 'selected' : ''}>Male</option>
+                                <option value="Other" ${d.gender === 'Other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">4. Mobile Number *</label>
+                            <input type="tel" name="mobile" required pattern="[0-9]{10}" value="${escapeHtml(d.mobile)}" placeholder="10-digit mobile" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">5. Email (Optional)</label>
+                            <input type="email" name="email" value="${escapeHtml(d.email)}" placeholder="name@email.com" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Visit Type *</label>
+                        <select name="visitType" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:outline-none focus:border-apollo-red">
+                            <option value="First Visit" ${d.visitType === 'First Visit' ? 'selected' : ''}>First Visit</option>
+                            <option value="Follow-up Visit" ${d.visitType === 'Follow-up Visit' ? 'selected' : ''}>Follow-up Visit</option>
+                        </select>
+                    </div>
+
+                    ${isMaternityRelated ? `
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Current Pregnancy Week / Month (Optional)</label>
+                        <input type="text" name="pregnancyWeek" value="${escapeHtml(d.pregnancyWeek)}" placeholder="e.g., 16 Weeks / Not Applicable" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    </div>
+                    ` : ''}
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Brief Reason (Optional)</label>
+                            <input type="text" name="reason" value="${escapeHtml(d.reason)}" placeholder="e.g., Routine checkup" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Existing Patient ID (Opt.)</label>
+                            <input type="text" name="existingPatientId" value="${escapeHtml(d.existingPatientId)}" placeholder="UHID if any" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                        </div>
+                    </div>
+
+                    <label class="flex items-start gap-2 pt-1 cursor-pointer text-[11px] text-slate-600">
+                        <input type="checkbox" name="consent" required checked class="mt-0.5 rounded text-apollo-red focus:ring-apollo-red">
+                        <span>I consent to Apollo Cradle Royale processing my contact details for appointment scheduling in accordance with patient privacy standards.</span>
+                    </label>
+
+                    <button type="submit" class="w-full py-2.5 bg-apollo-red hover:bg-apollo-darkRed text-white font-semibold rounded-xl shadow-xs transition">
+                        Review Appointment Summary
+                    </button>
+                </form>
+            `;
+            botReplyWithDelay(formHtml);
+        }
+
+        function submitPatientDetailsForm(e, formId) {
+            e.preventDefault();
+            const form = document.getElementById(formId);
+            const fd = new FormData(form);
+
+            state.bookingDraft.patientName = fd.get("patientName").trim();
+            state.bookingDraft.ageOrDob = fd.get("ageOrDob").trim();
+            state.bookingDraft.gender = fd.get("gender");
+            state.bookingDraft.mobile = fd.get("mobile").trim();
+            state.bookingDraft.email = (fd.get("email") || "").trim();
+            state.bookingDraft.visitType = fd.get("visitType");
+            state.bookingDraft.pregnancyWeek = (fd.get("pregnancyWeek") || "").trim();
+            state.bookingDraft.reason = (fd.get("reason") || "").trim();
+            state.bookingDraft.existingPatientId = (fd.get("existingPatientId") || "").trim();
+            state.bookingDraft.consentGiven = true;
+
+            // Disable form inputs after submission so user cannot double submit
+            Array.from(form.elements).forEach(el => el.disabled = true);
+
+            // STEP 7: BOOKING REVIEW
+            showBookingReviewSummary();
+        }
+
+        function showBookingReviewSummary() {
+            state.step = "BOOKING_REVIEW";
+            const d = state.bookingDraft;
+            const summaryHtml = `
+                <div class="space-y-2">
+                    <p class="font-display font-bold text-xs uppercase tracking-wider text-apollo-blue">Appointment Summary</p>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1.5 text-slate-700">
+                        <p><strong>Patient Name:</strong> ${escapeHtml(d.patientName)} (${escapeHtml(d.ageOrDob)}, ${escapeHtml(d.gender)})</p>
+                        <p><strong>Mobile Number:</strong> ${escapeHtml(d.mobile)}</p>
+                        <p><strong>Department:</strong> ${escapeHtml(d.department)}</p>
+                        <p><strong>Doctor:</strong> ${escapeHtml(d.doctorName)}</p>
+                        <p><strong>Appointment Date:</strong> ${formatFriendlyDate(d.date)}</p>
+                        <p><strong>Appointment Time:</strong> ${escapeHtml(d.time)}</p>
+                        <p><strong>Consultation Type:</strong> ${escapeHtml(d.consultationType)}</p>
+                        <p><strong>Visit Type:</strong> ${escapeHtml(d.visitType)}</p>
+                        ${d.pregnancyWeek ? `<p><strong>Pregnancy Week/Month:</strong> ${escapeHtml(d.pregnancyWeek)}</p>` : ''}
+                    </div>
+                    <p class="font-medium text-apollo-navy pt-1">Please review your appointment details. Would you like to confirm your booking?</p>
+                </div>
+            `;
+            botReplyWithDelay(summaryHtml, [
+                { label: "Confirm Appointment", action: "confirmBooking()", primary: true },
+                { label: "Edit Details", action: "renderPatientDetailsForm()" },
+                { label: "Cancel", action: "cancelDraftBooking()" }
+            ]);
+        }
+
+        function cancelDraftBooking() {
+            appendUserMessage("Cancel");
+            state.step = "GREETING";
+            botReplyWithDelay("No problem! Your draft booking has been cancelled. How else may I assist you today?", [
+                { label: "Book an Appointment", action: "handleQuickAction('Book an Appointment')", primary: true },
+                { label: "Find a Doctor", action: "handleQuickAction('Find a Doctor')" },
+                { label: "Contact Hospital", action: "handleQuickAction('Contact Hospital')" }
+            ]);
+        }
+
+        // STEP 8: APPOINTMENT CONFIRMATION
+        async function confirmBooking() {
+            appendUserMessage("Confirm Appointment");
+            const typingId = showTypingIndicator();
+
+            try {
+                const confirmed = await ApolloBookingAPI.createBooking(state.bookingDraft);
+                removeTypingIndicator(typingId);
+                state.step = "CONFIRMED";
+
+                const confirmationHtml = `
+                    <div class="space-y-2.5">
+                        <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Confirmed
+                        </div>
+                        <p class="font-semibold text-apollo-navy">Your appointment has been successfully booked!</p>
+                        <p class="text-xs text-slate-600">Thank you for choosing Apollo Cradle Royale.</p>
+                        <div class="bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-200/80 text-xs space-y-1.5 text-slate-800">
+                            <p><strong>• Booking ID:</strong> <span class="font-mono font-bold text-apollo-navy">${confirmed.bookingId}</span></p>
+                            <p><strong>• Patient Name:</strong> ${escapeHtml(confirmed.patientName)}</p>
+                            <p><strong>• Doctor:</strong> ${escapeHtml(confirmed.doctorName)}</p>
+                            <p><strong>• Date:</strong> ${formatFriendlyDate(confirmed.date)}</p>
+                            <p><strong>• Time:</strong> ${escapeHtml(confirmed.time)}</p>
+                            <p><strong>• Location:</strong> Apollo Cradle Royale, Chirag Enclave.</p>
+                        </div>
+                        <p class="text-xs text-slate-600">We look forward to welcoming you!<br>For assistance, contact us at <strong>1860 500 4424</strong>.</p>
+                    </div>
+                `;
+                appendBotMessage(confirmationHtml, [
+                    { label: "Copy Booking ID", action: `copyBookingId('${confirmed.bookingId}')` },
+                    { label: "Book Another Appointment", action: "handleQuickAction('Book an Appointment')" }
+                ]);
+            } catch (err) {
+                removeTypingIndicator(typingId);
+                // Honest API failure fallback — never falsely claim confirmation
+                appendBotMessage(`
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">
+                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Booking System Temporarily Offline
+                        </div>
+                        <p class="text-sm font-semibold text-apollo-navy">We could not complete automated confirmation right now.</p>
+                        <p class="text-xs text-slate-600">Your details have been saved. Please submit a priority callback request so our Chirag Enclave front desk can lock in your slot immediately, or call <strong>1860 500 4424</strong>.</p>
+                    </div>
+                `, [
+                    { label: "Submit Priority Callback Request", action: "savePriorityCallbackFromDraft()", primary: true },
+                    { label: "Call 1860 500 4424", action: "window.location.href='tel:18605004424'" }
+                ]);
+            }
+        }
+
+        function copyBookingId(id) {
+            const temp = document.createElement("textarea");
+            temp.value = id;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            appendBotMessage(`Booking ID <strong>${id}</strong> copied to clipboard.`);
+        }
+
+        function savePriorityCallbackFromDraft() {
+            const d = state.bookingDraft;
+            state.callbacks.unshift({
+                id: "CB-" + Math.floor(1000 + Math.random() * 9000),
+                name: d.patientName || "Patient",
+                mobile: d.mobile || "Not provided",
+                reason: `Appointment Request: ${d.doctorName} (${d.department}) on ${d.date} at ${d.time}`,
+                createdAt: new Date().toLocaleString()
+            });
+            saveStore();
+            appendBotMessage(`
+                <p class="font-semibold text-apollo-navy">Priority Callback Logged!</p>
+                <p class="text-xs text-slate-600 mt-1">Our Chirag Enclave patient care coordinator will call <strong>${escapeHtml(d.mobile)}</strong> shortly to confirm your appointment with <strong>${escapeHtml(d.doctorName)}</strong>. You can also reach us anytime at <strong>1860 500 4424</strong>.</p>
+            `);
+        }
+
+        /**
+         * 6. ADDITIONAL FEATURES: FIND A DOCTOR, RESCHEDULE, CANCEL, FAQS & CALLBACK
+         */
+        function openFindDoctorSearch() {
+            const searchId = "docSearch-" + Date.now();
+            const html = `
+                <p class="font-semibold text-apollo-navy mb-1">Find a Specialist at Chirag Enclave</p>
+                <p class="text-xs text-slate-500 mb-2">Search by doctor name, specialization, or department:</p>
+                <input 
+                    type="text" 
+                    id="${searchId}" 
+                    oninput="filterDoctorResults(this.value, '${searchId}-results')"
+                    placeholder="e.g., Yuvakshi, Paediatrics, Fetal, Nutritionist..."
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:border-apollo-red mb-2"
+                >
+                <div id="${searchId}-results" class="space-y-2 max-h-60 overflow-y-auto pr-1 chat-scroll">
+                    ${renderDoctorCardsSubset(DOCTORS_DIRECTORY)}
+                </div>
+            `;
+            botReplyWithDelay(html);
+        }
+
+        function filterDoctorResults(query, containerId) {
+            const q = query.toLowerCase().trim();
+            const filtered = DOCTORS_DIRECTORY.filter(d =>
+                d.name.toLowerCase().includes(q) ||
+                d.specialization.toLowerCase().includes(q) ||
+                d.department.toLowerCase().includes(q)
+            );
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = filtered.length > 0
+                ? renderDoctorCardsSubset(filtered)
+                : `<p class="text-xs text-slate-500 py-2 text-center">No matching doctors found in our Chirag Enclave directory.</p>`;
+        }
+
+        function renderDoctorCardsSubset(doctors) {
+            return doctors.map(doc => `
+                <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-white hover:border-apollo-red/50 transition">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <p class="font-bold text-apollo-navy text-xs">${doc.name}</p>
+                            <p class="text-[11px] text-apollo-blue font-medium">${doc.specialization} (${doc.department})</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">${doc.qualifications}</p>
+                            <p class="text-[10px] text-slate-400">Experience: ${doc.experience}</p>
+                        </div>
+                        <button onclick="selectDoctor('${doc.id}')" class="shrink-0 bg-apollo-red hover:bg-apollo-darkRed text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition">
+                            Book
+                        </button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        // B & C: RESCHEDULE OR CANCEL EXISTING APPOINTMENT
+        function openManageBookingPrompt() {
+            const formId = "manageForm-" + Date.now();
+            const html = `
+                <p class="font-semibold text-apollo-navy mb-1">Manage Existing Appointment</p>
+                <p class="text-xs text-slate-500 mb-2.5">Verify your booking using your Booking ID and registered 10-digit mobile number. <br><span class="text-[11px] text-slate-400">(Demo ID: <strong>ACR-CE-84920</strong> • Mobile: <strong>9811001122</strong>)</span></p>
+                <form id="${formId}" onsubmit="verifyExistingBooking(event, '${formId}')" class="space-y-2 text-xs">
+                    <input type="text" name="bookingId" required placeholder="Booking ID (e.g., ACR-CE-84920)" class="w-full px-3 py-2 rounded-xl border border-slate-300 uppercase focus:outline-none focus:border-apollo-red">
+                    <input type="tel" name="mobile" required pattern="[0-9]{10}" placeholder="Registered 10-digit Mobile Number" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    <button type="submit" class="w-full py-2 bg-apollo-navy hover:bg-apollo-blue text-white font-semibold rounded-xl transition">
+                        Verify Booking
+                    </button>
+                </form>
+            `;
+            botReplyWithDelay(html);
+        }
+
+        function verifyExistingBooking(e, formId) {
+            e.preventDefault();
+            const fd = new FormData(document.getElementById(formId));
+            const bId = fd.get("bookingId").trim().toUpperCase();
+            const mob = fd.get("mobile").trim();
+
+            const match = state.bookings.find(b => b.bookingId.toUpperCase() === bId && b.mobile === mob);
+            if (!match) {
+                botReplyWithDelay(`
+                    <p class="text-xs text-rose-700 font-semibold">We could not find an appointment matching Booking ID <strong>${escapeHtml(bId)}</strong> and that mobile number.</p>
+                    <p class="text-xs text-slate-600 mt-1">Please double-check your details or call our Chirag Enclave desk at <strong>1860 500 4424</strong> for assistance.</p>
+                `, [
+                    { label: "Try Again", action: "openManageBookingPrompt()" },
+                    { label: "Request Staff Callback", action: "startCallbackWorkflow('Booking Verification Assistance')" }
+                ]);
+                return;
+            }
+
+            if (match.status === "Cancelled") {
+                botReplyWithDelay(`
+                    <p class="text-xs text-slate-700">Booking <strong>${match.bookingId}</strong> for <strong>${escapeHtml(match.patientName)}</strong> is currently marked as <strong>Cancelled</strong>.</p>
+                `, [
+                    { label: "Book New Appointment", action: "handleQuickAction('Book an Appointment')", primary: true }
+                ]);
+                return;
+            }
+
+            botReplyWithDelay(`
+                <div class="space-y-2">
+                    <p class="font-semibold text-apollo-navy text-xs">Verified Appointment Found:</p>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+                        <p><strong>Booking ID:</strong> ${match.bookingId}</p>
+                        <p><strong>Patient:</strong> ${escapeHtml(match.patientName)}</p>
+                        <p><strong>Doctor:</strong> ${escapeHtml(match.doctorName)} (${escapeHtml(match.department)})</p>
+                        <p><strong>Scheduled:</strong> ${formatFriendlyDate(match.date)} at ${escapeHtml(match.time)}</p>
+                    </div>
+                    <p class="text-xs text-slate-600">Would you like to reschedule or cancel this appointment?</p>
+                </div>
+            `, [
+                { label: "Reschedule Slot", action: `beginRescheduleFlow('${match.bookingId}')`, primary: true },
+                { label: "Cancel Appointment", action: `confirmCancelBooking('${match.bookingId}')` }
+            ]);
+        }
+
+        function beginRescheduleFlow(bookingId) {
+            const match = state.bookings.find(b => b.bookingId === bookingId);
+            if (!match) return;
+            appendUserMessage("Reschedule Slot");
+            state.rescheduleTargetId = bookingId;
+            state.bookingDraft.doctorName = match.doctorName;
+            state.bookingDraft.department = match.department;
+            selectConsultationType(match.consultationType || "Hospital Visit (In-person)");
+        }
+
+        async function confirmCancelBooking(bookingId) {
+            appendUserMessage("Cancel Appointment");
+            try {
+                const cancelled = await ApolloBookingAPI.cancelBooking(bookingId);
+                botReplyWithDelay(`
+                    <div class="space-y-1.5">
+                        <p class="font-semibold text-rose-700">Appointment Cancelled</p>
+                        <p class="text-xs text-slate-600">Your appointment <strong>${cancelled.bookingId}</strong> with <strong>${escapeHtml(cancelled.doctorName)}</strong> on ${formatFriendlyDate(cancelled.date)} has been cancelled as per Apollo Cradle Royale policy.</p>
+                        <p class="text-xs text-slate-500">Need a new slot? You can book anytime below or call <strong>1860 500 4424</strong>.</p>
+                    </div>
+                `, [
+                    { label: "Book New Appointment", action: "handleQuickAction('Book an Appointment')", primary: true }
+                ]);
+            } catch (e) {
+                botReplyWithDelay("Unable to process cancellation online right now. Please call <strong>1860 500 4424</strong>.");
+            }
+        }
+
+        // D: FREQUENTLY ASKED QUESTIONS & SERVICES
+        function showServicesList() {
+            const html = `
+                <p class="font-semibold text-apollo-navy mb-1.5">Medical Specialties at Apollo Cradle Royale, Chirag Enclave</p>
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-1 chat-scroll text-xs">
+                    ${SPECIALTIES.map(s => `
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="font-bold text-apollo-navy">${s.name}</span>
+                                <button onclick="selectDepartment('${s.bookingDept}')" class="text-[11px] font-semibold text-apollo-red hover:underline shrink-0">Book →</button>
+                            </div>
+                            <p class="text-slate-600 mt-1 leading-relaxed">${s.desc}</p>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+            botReplyWithDelay(html);
+        }
+
+        function showHospitalInformation() {
+            const html = `
+                <div class="space-y-2 text-xs">
+                    <p class="font-display font-bold text-sm text-apollo-navy">${HOSPITAL_INFO.name}</p>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+                        <p><strong>📍 Address:</strong> ${HOSPITAL_INFO.address}</p>
+                        <p><strong>🕒 Operating Hours:</strong> ${HOSPITAL_INFO.hours} (Emergency, Maternity, Paediatrics & NICU)</p>
+                        <p><strong>📞 Helpline:</strong> <a href="tel:18605004424" class="text-apollo-red font-semibold underline">${HOSPITAL_INFO.contact}</a></p>
+                        <p><strong>☎️ Alternate Desk:</strong> <a href="tel:01144244424" class="text-apollo-blue font-semibold underline">${HOSPITAL_INFO.altContact}</a></p>
+                        <p><strong>🌐 Official Portal:</strong> <a href="${HOSPITAL_INFO.website}" target="_blank" rel="noopener" class="text-apollo-blue underline">Apollo Cradle Chirag Enclave</a></p>
+                    </div>
+                </div>
+            `;
+            botReplyWithDelay(html, [
+                { label: "Book an Appointment", action: "handleQuickAction('Book an Appointment')", primary: true },
+                { label: "Request Staff Callback", action: "startCallbackWorkflow('General Hospital Inquiry')" }
+            ]);
+        }
+
+        function showFaqMenu() {
+            const html = `
+                <p class="font-semibold text-apollo-navy mb-2">Frequently Asked Questions</p>
+                <div class="space-y-1.5">
+                    ${FAQ_ITEMS.map((item, idx) => `
+                        <button onclick="answerFaq(${idx})" class="w-full text-left text-xs p-2.5 rounded-xl bg-slate-50 hover:bg-apollo-softRed border border-slate-200 hover:border-apollo-red/40 text-apollo-navy font-medium transition flex items-center justify-between gap-2">
+                            <span>${item.q}</span>
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-apollo-red shrink-0"></i>
+                        </button>
+                    `).join("")}
+                </div>
+            `;
+            botReplyWithDelay(html);
+        }
+
+        function answerFaq(idx) {
+            const item = FAQ_ITEMS[idx];
+            if (!item) return;
+            appendUserMessage(item.q);
+            botReplyWithDelay(
+                `<p class="text-xs text-slate-700 leading-relaxed">${item.a}</p>`,
+                [
+                    { label: "Book an Appointment", action: "handleQuickAction('Book an Appointment')", primary: true },
+                    { label: "More FAQs", action: "showFaqMenu()" }
+                ]
+            );
+        }
+
+        // E: CONTACT SUPPORT & HUMAN-AGENT ESCALATION
+        function startCallbackWorkflow(defaultReason = "Patient Assistance Request") {
+            const formId = "cbForm-" + Date.now();
+            const html = `
+                <p class="font-semibold text-apollo-navy mb-1">Connect with Apollo Cradle Staff</p>
+                <p class="text-xs text-slate-500 mb-2.5">Call us directly at <strong>1860 500 4424</strong> / <strong>011-4424 4424</strong>, or leave your contact details below for a priority callback from our Chirag Enclave reception desk:</p>
+                <form id="${formId}" onsubmit="submitCallbackForm(event, '${formId}')" class="space-y-2 text-xs">
+                    <input type="text" name="name" required placeholder="Your Full Name *" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    <input type="tel" name="mobile" required pattern="[0-9]{10}" placeholder="10-Digit Mobile Number *" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    <input type="text" name="reason" required value="${escapeHtml(defaultReason)}" placeholder="How can our team help?" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:border-apollo-red">
+                    <label class="flex items-start gap-2 text-[11px] text-slate-600">
+                        <input type="checkbox" required checked class="mt-0.5 rounded text-apollo-red">
+                        <span>I consent to receive a callback from Apollo Cradle Royale staff.</span>
+                    </label>
+                    <button type="submit" class="w-full py-2 bg-apollo-red hover:bg-apollo-darkRed text-white font-semibold rounded-xl transition">
+                        Request Callback
+                    </button>
+                </form>
+            `;
+            botReplyWithDelay(html);
+        }
+
+        function submitCallbackForm(e, formId) {
+            e.preventDefault();
+            const form = document.getElementById(formId);
+            const fd = new FormData(form);
+            const entry = {
+                id: "CB-" + Math.floor(1000 + Math.random() * 9000),
+                name: fd.get("name").trim(),
+                mobile: fd.get("mobile").trim(),
+                reason: fd.get("reason").trim(),
+                createdAt: new Date().toLocaleString()
+            };
+            state.callbacks.unshift(entry);
+            saveStore();
+            Array.from(form.elements).forEach(el => el.disabled = true);
+
+            botReplyWithDelay(`
+                <div class="space-y-1.5">
+                    <div class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                        Reference ID: ${entry.id}
+                    </div>
+                    <p class="font-semibold text-apollo-navy">Callback Request Registered</p>
+                    <p class="text-xs text-slate-600">Thank you, <strong>${escapeHtml(entry.name)}</strong>. A patient care coordinator from Apollo Cradle Royale, Chirag Enclave will call you on <strong>${escapeHtml(entry.mobile)}</strong> shortly.</p>
+                </div>
+            `);
+        }
+
+        /**
+         * 7. NATURAL LANGUAGE INTENT ROUTER & MEDICAL SAFETY GUARDRAILS
+         */
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById("chatInput");
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = "";
+            handleUserInput(text);
+        }
+
+        function handleUserInput(text) {
+            appendUserMessage(text);
+            processIntent(text);
+        }
+
+        function processIntent(rawText) {
+            const msg = rawText.toLowerCase();
+
+            // 1. IMMEDIATE MEDICAL EMERGENCY GUARDRAIL (Never delay emergency care)
+            const emergencyKeywords = [
+                "emergency", "bleeding heavily", "heavy bleeding", "severe pain", "unconscious",
+                "not breathing", "chest pain", "seizure", "water broke", "labour pain", "labor pain",
+                "miscarriage", "fainting", "accident", "urgent medical", "112", "ambulance"
+            ];
+            if (emergencyKeywords.some(k => msg.includes(k))) {
+                botReplyWithDelay(`
+                    <div class="p-3 rounded-xl bg-rose-50 border-2 border-apollo-red space-y-2 text-xs">
+                        <p class="font-bold text-apollo-red text-sm flex items-center gap-1.5">
+                            <i data-lucide="siren" class="w-4 h-4"></i> Urgent Medical Attention Required
+                        </p>
+                        <p class="text-slate-800 font-medium">If you or someone with you is experiencing a medical emergency, please <strong>do not wait to book an online appointment</strong>.</p>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                            <li>Call National Emergency Services immediately at <strong>112</strong>.</li>
+                            <li>Call Apollo Cradle Royale 24/7 Emergency Desk at <strong>1860 500 4424</strong> or <strong>011-4424 4424</strong>.</li>
+                            <li>Proceed immediately to our 24/7 Emergency Unit at <strong>Plot No. A-2, Outer Ring Road, Greater Kailash-1, Chirag Enclave, New Delhi</strong>.</li>
+                        </ul>
+                    </div>
+                `, [
+                    { label: "Call 1860 500 4424 Now", action: "window.location.href='tel:18605004424'", primary: true }
+                ], 150);
+                return;
+            }
+
+            // 2. MEDICAL DIAGNOSIS / PRESCRIPTION SAFETY GUARDRAIL
+            const diagnosisKeywords = ["diagnose", "what medicine", "prescribe", "tablet", "dosage", "do i have", "cure for", "treatment for"];
+            if (diagnosisKeywords.some(k => msg.includes(k))) {
+                botReplyWithDelay(`
+                    <p class="text-xs text-slate-700 leading-relaxed">As an AI Virtual Receptionist, I cannot provide medical diagnoses, prescribe medications, or replace professional clinical evaluation.</p>
+                    <p class="text-xs text-slate-700 mt-1.5">I would be happy to connect you with an appropriate specialist at <strong>Apollo Cradle Royale, Chirag Enclave</strong> for an in-person consultation.</p>
+                `, [
+                    { label: "Book a Specialist Consultation", action: "startBookingStep2()", primary: true },
+                    { label: "Find a Doctor", action: "openFindDoctorSearch()" }
+                ]);
+                return;
+            }
+
+            // 3. STANDARD WORKFLOW INTENTS
+            if (msg.includes("book") || msg.includes("appointment") || msg.includes("schedule") || msg.includes("consult")) {
+                startBookingStep2();
+                return;
+            }
+
+            if (msg.includes("find a doctor") || msg.includes("doctor") || msg.includes("specialist") || msg.includes("directory")) {
+                // Check if user mentioned a specific doctor's name
+                const matchedDoc = DOCTORS_DIRECTORY.find(d => {
+                    const clean = d.name.toLowerCase().replace(/^(dr\.|prof\.|ms\.)\s+/gi, "");
+                    return msg.includes(clean) || clean.split(" ").some(part => part.length > 3 && msg.includes(part));
+                });
+                if (matchedDoc) {
+                    botReplyWithDelay(`
+                        <div class="space-y-2 text-xs">
+                            <p class="font-bold text-apollo-navy text-sm">${matchedDoc.name}</p>
+                            <p class="text-apollo-blue font-semibold">${matchedDoc.specialization} • ${matchedDoc.department}</p>
+                            <p class="text-slate-600">${matchedDoc.qualifications}</p>
+                            <p class="text-slate-500">Experience: ${matchedDoc.experience}</p>
+                            <p class="text-slate-500">Location: Apollo Cradle Royale, Chirag Enclave</p>
+                        </div>
+                    `, [
+                        { label: `Book with ${matchedDoc.name}`, action: `selectDoctor('${matchedDoc.id}')`, primary: true },
+                        { label: "Browse All Doctors", action: "openFindDoctorSearch()" }
+                    ]);
+                    return;
+                }
+                openFindDoctorSearch();
+                return;
+            }
+
+            if (msg.includes("reschedule") || msg.includes("cancel") || msg.includes("manage")) {
+                openManageBookingPrompt();
+                return;
+            }
+
+            if (msg.includes("service") || msg.includes("specialt") || msg.includes("maternity") || msg.includes("nicu") || msg.includes("fertility") || msg.includes("fetal") || msg.includes("paediatric") || msg.includes("pediatric") || msg.includes("gynaec") || msg.includes("radiology")) {
+                showServicesList();
+                return;
+            }
+
+            if (msg.includes("faq") || msg.includes("question") || msg.includes("24 hour") || msg.includes("open") || msg.includes("where") || msg.includes("location") || msg.includes("address") || msg.includes("hospital information")) {
+                if (msg.includes("where") || msg.includes("address") || msg.includes("location") || msg.includes("hospital information")) {
+                    showHospitalInformation();
+                } else {
+                    showFaqMenu();
+                }
+                return;
+            }
+
+            if (msg.includes("contact") || msg.includes("phone") || msg.includes("number") || msg.includes("callback") || msg.includes("staff") || msg.includes("human")) {
+                showHospitalInformation();
+                return;
+            }
+
+            // Fallback polite response with quick navigation + staff escalation
+            botReplyWithDelay(`
+                <p class="text-xs text-slate-700 leading-relaxed">Thank you for reaching out to <strong>Apollo Cradle Royale, Chirag Enclave</strong>. I can help you book an appointment, search our verified specialist directory, explore clinical services, or connect you with our front desk team.</p>
+                <p class="text-xs text-slate-600 mt-1.5">For immediate assistance, you can also call <strong>1860 500 4424</strong> or <strong>011-4424 4424</strong>.</p>
+            `, [
+                { label: "Book an Appointment", action: "startBookingStep2()", primary: true },
+                { label: "Find a Doctor", action: "openFindDoctorSearch()" },
+                { label: "FAQs", action: "showFaqMenu()" },
+                { label: "Request Callback", action: "startCallbackWorkflow('General Inquiry')" }
+            ]);
+        }
+
+        /**
+         * 8. RECEPTIONIST ADMIN DASHBOARD CONSOLE
+         */
+        function toggleAdminModal(show) {
+            const modal = document.getElementById("adminModal");
+            if (show) {
+                renderAdminDashboard();
+                modal.classList.remove("hidden");
+            } else {
+                modal.classList.add("hidden");
+            }
+        }
+
+        function renderAdminDashboard() {
+            const confirmed = state.bookings.filter(b => b.status === "Confirmed");
+            const cancelled = state.bookings.filter(b => b.status === "Cancelled");
+
+            document.getElementById("statConfirmed").textContent = confirmed.length;
+            document.getElementById("statCallbacks").textContent = state.callbacks.length;
+            document.getElementById("statCancelled").textContent = cancelled.length;
+
+            const bookingsList = document.getElementById("adminBookingsList");
+            if (state.bookings.length === 0) {
+                bookingsList.innerHTML = `<p class="p-5 text-xs text-slate-400">No appointments recorded yet.</p>`;
+            } else {
+                bookingsList.innerHTML = state.bookings.map(b => `
+                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80">
+                        <div class="space-y-0.5">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs font-bold text-apollo-navy">${b.bookingId}</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                                    b.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                }">${b.status}</span>
+                            </div>
+                            <p class="font-semibold text-slate-800 text-sm">${escapeHtml(b.patientName)} <span class="text-xs font-normal text-slate-500">(${escapeHtml(b.ageOrDob)}, ${escapeHtml(b.gender)} • 📞 ${escapeHtml(b.mobile)})</span></p>
+                            <p class="text-xs text-slate-600"><strong>${escapeHtml(b.doctorName)}</strong> • ${escapeHtml(b.department)} • ${formatFriendlyDate(b.date)} at <strong>${escapeHtml(b.time)}</strong> (${escapeHtml(b.consultationType)})</p>
+                        </div>
+                        ${b.status === 'Confirmed' ? `
+                            <button onclick="adminCancelBooking('${b.bookingId}')" class="shrink-0 text-xs font-semibold text-rose-600 hover:bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200 transition">
+                                Cancel Slot
+                            </button>
+                        ` : ''}
+                    </div>
+                `).join("");
+            }
+
+            const cbList = document.getElementById("adminCallbacksList");
+            if (state.callbacks.length === 0) {
+                cbList.innerHTML = `<p class="p-5 text-xs text-slate-400">No pending staff callback requests.</p>`;
+            } else {
+                cbList.innerHTML = state.callbacks.map(c => `
+                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <p class="font-semibold text-slate-800 text-sm">${escapeHtml(c.name)} <span class="text-xs font-normal text-slate-500">• 📞 ${escapeHtml(c.mobile)}</span></p>
+                            <p class="text-xs text-slate-600 mt-0.5">${escapeHtml(c.reason)}</p>
+                        </div>
+                        <span class="text-[11px] text-slate-400">${c.createdAt}</span>
+                    </div>
+                `).join("");
+            }
+        }
+
+        async function adminCancelBooking(bookingId) {
+            await ApolloBookingAPI.cancelBooking(bookingId);
+        }
+    </script>
+</body>
+</html>
